@@ -1,0 +1,912 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width= , initial-scale=1.0">
+    <title>spotify - webplayer : music for everyone</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+        integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="icon" href="./contain/logo.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap"
+        rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            font-family: "Montserrat", sans-serif;
+            background-color: black;
+            color: white;
+            overflow: hidden;
+        }
+
+        .sp {
+            display: flex;
+            height: 100vh;
+            padding: 0.5rem;
+        }
+
+        .sidebar {
+            background-color: black;
+            width: 300px;
+            border-radius: 1rem;
+
+        }
+
+        .main {
+            background-color: black;
+            flex: 1;
+            border-radius: 1rem;
+            overflow: auto;
+        }
+
+        .player {
+            background-color: black;
+            bottom: 0;
+            width: 100%;
+            position: fixed;
+            height: 65px;
+            border-radius: 1rem;
+        }
+
+        a {
+            text-decoration: none;
+            color: white;
+
+        }
+
+        .nav {
+            background-color: #121212;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            height: 100px;
+            padding: 0.5rem 0.75rem;
+            border-radius: 1rem;
+        }
+
+        .nav-op {
+            line-height: 2.5rem;
+            opacity: 0.7;
+            padding: 0.5rem;
+        }
+
+        .nav-op:hover {
+            opacity: 1;
+        }
+
+        .nav-op i {
+            font-size: 1.25rem;
+        }
+
+        .nav-op a {
+            font-size: 1rem;
+            margin-left: 1rem;
+        }
+
+        .library {
+            background-color: #121212;
+            border-radius: 1rem;
+            height: 100%;
+        }
+
+        .option {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 0.5rem;
+            padding: 0.5rem 0.75rem;
+        }
+
+        .lib-op img {
+            height: 1.25rem;
+            width: 1.25rem;
+        }
+
+        .icons {
+            font-size: 1.25rem;
+            opacity: 0.7;
+            margin-right: 1rem;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .icons i {
+            opacity: 0.7;
+            margin-right: 1rem;
+        }
+
+        .icons i:hover {
+            opacity: 1;
+            margin-right: 1rem;
+        }
+
+        .boxs {
+            background-color: #232323;
+            height: auto;
+            border-radius: 0.75rem;
+            margin: 0.75rem 0.5rem 1.75rem 0.5rem;
+            padding: 0.75rem;
+
+        }
+
+        .b-p1 {
+            font-size: 1rem;
+            font-weight: 500;
+        }
+
+        .b-p2 {
+            font-size: 0.85rem;
+            opacity: 0.9;
+        }
+
+        .badge {
+            background-color: #fff;
+            border: none;
+            border-radius: 100px;
+            padding: 0.25rem 1rem;
+            font-weight: 700;
+            margin-top: 0.5rem;
+            height: 2rem;
+            width: fit-content;
+        }
+
+        .s-nav {
+            position: sticky;
+            top: 0;
+            background-color: #121212;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.5rem 0 0.5rem 0;
+            border-radius: 1rem;
+            margin-left: 0.5rem;
+        }
+
+        .s-nav button {
+            margin-right: 1rem;
+        }
+
+        .s-nav i {
+            margin-right: 1rem;
+        }
+
+        .nav-icon img {
+            margin-left: 1rem;
+        }
+
+        .dark-badge {
+            background-color: black;
+            color: #fff;
+        }
+
+        @media (max-width: 1000px) {
+            .hide {
+                display: none;
+            }
+
+        }
+
+        .volume-control {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            justify-content: flex-end;
+            padding-right: 1rem;
+            color: white;
+        }
+
+        #volume-bar {
+            width: 100px;
+            cursor: pointer;
+        }
+
+        .m-buttons {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .m-buttons button {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.4rem;
+            cursor: pointer;
+            transition: transform 0.2s ease, color 0.2s ease;
+        }
+
+        .m-buttons button:hover {
+            transform: scale(1.2);
+            color: #1db954;
+            /* Spotify green accent */
+        }
+
+
+        .main {
+            margin-left: 1rem;
+            background-color: #121212;
+        }
+
+        .card {
+            background-color: #232323;
+            margin-left: 1rem;
+            height: 350px;
+            width: 200px;
+            border-radius: 1rem;
+            padding: 1rem;
+            margin-top: 1rem;
+        }
+
+        .card:hover {
+            border: 1px solid white;
+            box-shadow: 2px 2px 2px white;
+        }
+
+
+        .card img {
+            height: 200px;
+            width: 100%;
+            object-fit: cover;
+            border-radius: 1rem;
+        }
+
+        .card .tital {
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        .card .info {
+            font-size: 1rem;
+            font-weight: 100;
+        }
+
+        .cards {
+            display: flex;
+            flex-wrap: wrap;
+            flex-direction: row;
+        }
+
+        .main h1 {
+            margin-left: 1rem;
+        }
+
+        .footer {
+            height: 240px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .line {
+            height: 30%;
+            width: 90%;
+            border-top: 1px solid white;
+            opacity: 0.7;
+        }
+
+        .music {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .m-media {
+            width: 25%;
+        }
+
+        .m-player {
+            width: 50%;
+            text-align: center;
+
+        }
+
+        .m-buttons img {
+            margin-right: 1.75rem;
+            width: 1rem;
+            height: 1rem;
+            opacity: 0.7;
+        }
+
+        .m-buttons img:hover {
+            opacity: 1;
+        }
+
+        .m-con {
+            width: 25%;
+        }
+
+        .pro-bar {
+            width: 70%;
+        }
+
+        .playlist {
+            max-height: 300px;
+            /* control overall playlist height */
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .playlist button {
+            margin-bottom: 0.5rem;
+            align-self: flex-start;
+            padding: 0.4rem 1rem;
+            font-weight: bold;
+            background-color: white;
+            color: black;
+            border-radius: 1rem;
+            border: none;
+            cursor: pointer;
+        }
+
+        .song-list {
+            flex: 1;
+            overflow-y: auto;
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            max-height: 250px;
+            display: flex;
+            flex-wrap: wrap;
+            flex-direction: row;
+            /* scroll area */
+        }
+
+        .song-list li {
+            padding: 0.5rem;
+            margin-bottom: 0.25rem;
+            background-color: #1e1e1e;
+            border-radius: 0.5rem;
+            font-size: 0.85rem;
+            word-break: break-word;
+            color: white;
+        }
+
+        .playlist-list,
+        .song-display {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+
+        .playlist-list li,
+        .song-display li {
+            padding: 0.5rem;
+            background-color: #1e1e1e;
+            border-radius: 0.5rem;
+            margin-bottom: 0.25rem;
+            cursor: pointer;
+            word-break: break-word;
+        }
+
+        .playlist-list li:hover,
+        .song-display li:hover {
+            background-color: #333;
+        }
+
+        /* 🎵 Main Playlist Box Style */
+        .playlist-box {
+            background: linear-gradient(to bottom right, #1e1e1e, #2c2c2c);
+            padding: 1rem 1.5rem;
+            border-radius: 1rem;
+            margin: 1rem;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+            width: 100%;
+            max-width: 500px;
+            min-height: 250px;
+        }
+
+        /* 🎧 Playlist Title */
+        #playlist-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: #ffffff;
+            margin-bottom: 1rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding-bottom: 0.5rem;
+        }
+
+        /* 🎶 Song List */
+        .song-display {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            overflow-y: auto;
+            max-height: 180px;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        /* 🎼 Song Item */
+        .song-display li {
+            background-color: #2e2e2e;
+            padding: 0.75rem 1rem;
+            border-radius: 0.5rem;
+            color: #ddd;
+            font-size: 0.95rem;
+            transition: background 0.3s ease, color 0.3s ease;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .song-display li:hover {
+            background-color: #3a3a3a;
+            color: #fff;
+        }
+
+        /* Optional: Add a music note icon before each song */
+        .song-display li::before {
+            content: "🎵";
+            font-size: 1rem;
+        }
+    </style>
+
+</head>
+
+<body>
+    <div class="sp">
+        <div class="sidebar">
+            <div class="nav">
+                <div class="nav-op">
+                    <i class="fa-solid fa-house"></i>
+                    <a href="">home</a>
+                </div>
+                <div class="nav-op">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    <a href="">search </a>
+                </div>
+            </div>
+            <div class="library">
+                <div class="option">
+                    <div class="lib-op nav-op">
+                        <img src="./contain/library_icon.png">
+                        <a href="">library</a>
+                    </div>
+                    <div class="icons ">
+                        <i class="fa-solid fa-plus"></i>
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </div>
+                </div>
+                <div class="boxs">
+                    <p class="b-p1">Create your first playlist</p>
+                    <p class="b-p2">It's easy, we'll helo you</p>
+                    <button class="badge">Create playlist</button>
+                </div>
+                <div class="playlist boxs">
+                    <p style="font-weight: bold;">Your Playlists</p>
+                    <ul class="playlist-list"></ul>
+                </div>
+            </div>
+        </div>
+        <div class="main">
+            <div class="s-nav">
+                <div class="nav-icon">
+                    <img src="./contain/backward_icon.png" alt="">
+                    <img class="hide" src="./contain/forward_icon.png " alt="">
+                </div>
+                <div class="s-nav">
+                    <button class="badge hide">Explore Primium</button>
+                    <button class="badge dark-badge"> <i class="fa-regular fa-circle-down"></i> install App</button>
+                    <i class="fa-regular fa-user"></i>
+                </div>
+            </div>
+            <h1>here is your songs</h1>
+            <div class="playlist-box">
+                <h2 id="playlist-title">Songs in "None"</h2>
+                <ul class="song-display">
+                    <li style="pointer-events: none; color: gray;">No playlist selected</li>
+                </ul>
+            </div>
+
+            <h1>Resently played</h1>
+            <div class="cards">
+                <div class="card">
+                    <img src="./contain/card1img.jpeg" alt="">
+                    <p class="tital">top-50 Global</p>
+                    <p class="info">your daily updates of most played...</p>
+                </div>
+            </div>
+            <h1>Trending now near you</h1>
+            <div class="cards">
+                <div class="card">
+                    <img src="./contain/card2img.jpeg" alt="">
+                    <p class="tital">top-50 Global</p>
+                    <p class="info">your daily updates of most played...</p>
+                </div>
+                <div class="card">
+                    <img src="./contain/card3img.jpeg" alt="">
+                    <p class="tital">top-50 Global</p>
+                    <p class="info">your daily updates of most played...</p>
+                </div>
+                <div class="card">
+                    <img src="./contain/card4img.jpeg" alt="">
+                    <p class="tital">top-50 Global</p>
+                    <p class="info">your daily updates of most played...</p>
+                </div>
+                <div class="card">
+                    <img src="./contain/card2img.jpeg" alt="">
+                    <p class="tital">top-50 Global</p>
+                    <p class="info">your daily updates of most played...</p>
+                </div>
+                <div class="card">
+                    <img src="./contain/card3img.jpeg" alt="">
+                    <p class="tital">top-50 Global</p>
+                    <p class="info">your daily updates of most played...</p>
+                </div>
+            </div>
+            <h1>Featured Charts</h1>
+            <div class="cards">
+                <div class="card">
+                    <img src="./contain/card5img.jpeg" alt="">
+                    <p class="tital">top-50 Global</p>
+                    <p class="info">your daily updates of most played...</p>
+                </div>
+                <div class="card">
+                    <img src="./contain/card6img.jpeg" alt="">
+                    <p class="tital">top-50 Global</p>
+                    <p class="info">your daily updates of most played...</p>
+                </div>
+                <div class="card">
+                    <img src="./contain/card1img.jpeg" alt="">
+                    <p class="tital">top-50 Global</p>
+                    <p class="info">your daily updates of most played...</p>
+                </div>
+            </div>
+            <div class="footer">
+                <div class="line"></div>
+            </div>
+        </div>
+        <div class="player music">
+            <div class="m-media">
+                <div id="now-playing" style="font-size: 0.9rem; color: #fff; padding-left: 1rem;">
+                    🎵 No song playing
+                </div>
+            </div>
+
+            <div class="m-player">
+                <div class="m-buttons">
+                    <button onclick="prevSong()" title="Previous">
+                        <i class="fa-solid fa-backward-step"></i>
+                    </button>
+                    <button onclick="togglePlayPause()" title="Play/Pause" id="play-pause-btn">
+                        <i class="fa-solid fa-play"></i>
+                    </button>
+                    <button onclick="nextSong()" title="Next">
+                        <i class="fa-solid fa-forward-step"></i>
+                    </button>
+                    <button onclick="replaySong()" title="Replay">
+                        <i class="fa-solid fa-rotate-left"></i>
+                    </button>
+                </div>
+
+                <div class="m-progress">
+                    <span class="cur-time">0:00</span>
+                    <input type="range" min="0" max="100" class="pro-bar" />
+                    <span class="total-time">0:00</span> <!-- updated dynamically -->
+                </div>
+
+            </div>
+            <div class="m-con">
+                <div class="volume-control" title="Volume">
+                    <i id="volume-icon" class="fa-solid fa-volume-high"></i>
+                    <input type="range" id="volume-bar" min="0" max="1" step="0.01" value="1">
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        async function getsong() {
+            let a = await fetch("http://127.0.0.1:5500/spotify/songs/");
+            let htmlText = await a.text();
+
+            let parser = new DOMParser();
+            let doc = parser.parseFromString(htmlText, 'text/html');
+
+            let links = Array.from(doc.querySelectorAll("a"))
+                .map(link => link.href)
+                .filter(href => href.endsWith(".mp3"));
+
+            return links;
+        }
+
+        // 🔄 1. Get list of folders (playlists)
+        async function getPlaylists() {
+            const res = await fetch("http://127.0.0.1:5500/spotify/songs/");
+            const htmlText = await res.text();
+
+            const parser = new DOMParser();
+            const doc = parser.parseFromString(htmlText, "text/html");
+
+            const folders = Array.from(doc.querySelectorAll("a.icon-directory"))
+                .map(a => {
+                    const href = a.getAttribute("href");
+                    const parts = href.split("/");
+                    return parts[parts.length - 1] || parts[parts.length - 2]; // removes empty if ends in /
+                });
+
+            return folders;
+        }
+
+        // 📂 2. Load playlists into sidebar
+        async function loadPlaylists() {
+            const playlists = await getPlaylists();
+            const listEl = document.querySelector(".playlist-list");
+            listEl.innerHTML = "";
+
+            for (const pl of playlists) {
+                listEl.innerHTML += `<li onclick="loadSongs('${pl}')">${pl}</li>`;
+            }
+        }
+
+        // 🎵 3. Load songs from a clicked playlist
+        async function loadSongs(playlistName) {
+            document.getElementById("playlist-title").textContent = `Songs in "${playlistName}"`;
+            const songContainer = document.querySelector(".song-display");
+            songContainer.innerHTML = "<li>Loading...</li>";
+
+            const res = await fetch(`http://127.0.0.1:5500/spotify/songs/${playlistName}/`);
+            const htmlText = await res.text();
+
+            const parser = new DOMParser();
+            const doc = parser.parseFromString(htmlText, "text/html");
+
+            const links = Array.from(doc.querySelectorAll("a"))
+                .map(a => a.href)
+                .filter(href => href.endsWith(".mp3"));
+
+            songContainer.innerHTML = "";
+
+            if (links.length === 0) {
+                songContainer.innerHTML = `<li>No songs found in "${playlistName}"</li>`;
+                return;
+            }
+
+            for (const song of links) {
+                const name = song.split("/").pop();
+                songContainer.innerHTML += `<li onclick="playSong('${song}')">${name}</li>`;
+            }
+        }
+
+        // ▶️ 4. Play song
+        let currentAudio;
+        function playSong(url) {
+            if (currentAudio) currentAudio.pause();
+
+            currentAudio = new Audio(url);
+            currentAudio.play().catch(err => console.error("Playback failed:", err));
+        }
+
+        // 🚀 5. Call on load
+        loadPlaylists();
+
+        let updateInterval;
+
+        function playSong(url) {
+            // Stop any current song
+            if (currentAudio) {
+                currentAudio.pause();
+                clearInterval(updateInterval);
+            }
+
+            currentAudio = new Audio(url);
+            currentAudio.play().catch(err => console.error("Playback failed:", err));
+
+            // Set Now Playing name
+            const name = url.split("/").pop();
+            document.getElementById("now-playing").textContent = `🎵 ${name}`;
+
+            // Set total duration when metadata is loaded
+            currentAudio.addEventListener("loadedmetadata", () => {
+                const duration = formatTime(currentAudio.duration);
+                document.querySelector(".total-time").textContent = duration;
+            });
+
+            // Update current time while playing
+            updateInterval = setInterval(() => {
+                if (currentAudio && !isNaN(currentAudio.currentTime)) {
+                    document.querySelector(".cur-time").textContent = formatTime(currentAudio.currentTime);
+
+                    // Update progress bar
+                    const progress = (currentAudio.currentTime / currentAudio.duration) * 100;
+                    document.querySelector(".pro-bar").value = progress;
+                }
+            }, 500);
+        }
+
+        // Helper: Format seconds to mm:ss
+        function formatTime(seconds) {
+            const min = Math.floor(seconds / 60);
+            const sec = Math.floor(seconds % 60);
+            return `${min}:${sec.toString().padStart(2, '0')}`;
+        }
+        document.querySelector(".pro-bar").addEventListener("input", (e) => {
+            if (currentAudio) {
+                currentAudio.currentTime = (e.target.value / 100) * currentAudio.duration;
+            }
+        });
+        function togglePlayPause() {
+            if (!currentAudio) return;
+
+            const icon = document.querySelector("#play-pause-btn i");
+
+            if (currentAudio.paused) {
+                currentAudio.play();
+                icon.classList.remove("fa-play");
+                icon.classList.add("fa-pause");
+            } else {
+                currentAudio.pause();
+                icon.classList.remove("fa-pause");
+                icon.classList.add("fa-play");
+            }
+        }
+        // Force play icon state on new song
+        const icon = document.querySelector("#play-pause-btn i");
+        icon.classList.remove("fa-pause");
+        icon.classList.add("fa-play");
+
+        currentAudio.addEventListener("play", () => {
+            icon.classList.remove("fa-play");
+            icon.classList.add("fa-pause");
+        });
+
+        // Volume bar
+        const volumeBar = document.getElementById("volume-bar");
+        const volumeIcon = document.getElementById("volume-icon");
+
+        volumeBar.addEventListener("input", () => {
+            if (currentAudio) {
+                currentAudio.volume = volumeBar.value;
+
+                // Change icon based on volume level
+                if (volumeBar.value == 0) {
+                    volumeIcon.className = "fa-solid fa-volume-xmark";
+                } else if (volumeBar.value < 0.5) {
+                    volumeIcon.className = "fa-solid fa-volume-low";
+                } else {
+                    volumeIcon.className = "fa-solid fa-volume-high";
+                }
+            }
+        });
+
+        // Click to mute/unmute
+        volumeIcon.addEventListener("click", () => {
+            if (!currentAudio) return;
+
+            if (currentAudio.volume > 0) {
+                currentAudio.volume = 0;
+                volumeBar.value = 0;
+                volumeIcon.className = "fa-solid fa-volume-xmark";
+            } else {
+                currentAudio.volume = 1;
+                volumeBar.value = 1;
+                volumeIcon.className = "fa-solid fa-volume-high";
+            }
+        });
+        // Set default volume
+        if (currentAudio) {
+            currentAudio.volume = volumeBar.value;
+        }
+
+
+
+    </script>
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  const volumeBar = document.getElementById("volume-bar");
+  const volumeIcon = document.getElementById("volume-icon");
+
+  if (!volumeBar || !volumeIcon) return;
+
+  volumeBar.addEventListener("input", () => {
+    if (currentAudio) {
+      currentAudio.volume = volumeBar.value;
+      volumeIcon.className = volumeBar.value == 0
+        ? "fa-solid fa-volume-xmark"
+        : volumeBar.value < 0.5
+        ? "fa-solid fa-volume-low"
+        : "fa-solid fa-volume-high";
+    }
+  });
+
+  volumeIcon.addEventListener("click", () => {
+    if (!currentAudio) return;
+    if (currentAudio.volume > 0) {
+      currentAudio.volume = 0;
+      volumeBar.value = 0;
+      volumeIcon.className = "fa-solid fa-volume-xmark";
+    } else {
+      currentAudio.volume = 1;
+      volumeBar.value = 1;
+      volumeIcon.className = "fa-solid fa-volume-high";
+    }
+  });
+});
+</script>
+
+
+<script>
+let currentSongIndex = -1;
+let currentPlaylist = [];
+
+function playSong(url, playlist = []) {
+  if (currentAudio) {
+    currentAudio.pause();
+    clearInterval(updateInterval);
+  }
+
+  currentPlaylist = playlist;
+  currentSongIndex = playlist.indexOf(url);
+  currentAudio = new Audio(url);
+  currentAudio.volume = document.getElementById("volume-bar")?.value || 1;
+  currentAudio.play();
+
+  document.getElementById("now-playing").textContent = "🎵 " + url.split("/").pop();
+
+  currentAudio.addEventListener("loadedmetadata", () => {
+    document.querySelector(".total-time").textContent = formatTime(currentAudio.duration);
+  });
+
+  updateInterval = setInterval(() => {
+    if (!isNaN(currentAudio.currentTime)) {
+      document.querySelector(".cur-time").textContent = formatTime(currentAudio.currentTime);
+      const progress = (currentAudio.currentTime / currentAudio.duration) * 100;
+      document.querySelector(".pro-bar").value = progress;
+    }
+  }, 500);
+
+  currentAudio.addEventListener("ended", nextSong);
+}
+
+function nextSong() {
+  if (currentPlaylist.length === 0) return;
+  currentSongIndex = (currentSongIndex + 1) % currentPlaylist.length;
+  playSong(currentPlaylist[currentSongIndex], currentPlaylist);
+}
+
+function prevSong() {
+  if (currentPlaylist.length === 0) return;
+  currentSongIndex = (currentSongIndex - 1 + currentPlaylist.length) % currentPlaylist.length;
+  playSong(currentPlaylist[currentSongIndex], currentPlaylist);
+}
+
+function togglePlayPause() {
+  if (!currentAudio) return;
+
+  const icon = document.querySelector("#play-pause-btn i");
+  if (currentAudio.paused) {
+    currentAudio.play();
+    icon.classList.replace("fa-play", "fa-pause");
+  } else {
+    currentAudio.pause();
+    icon.classList.replace("fa-pause", "fa-play");
+  }
+}
+
+function replaySong() {
+  if (currentAudio) {
+    currentAudio.currentTime = 0;
+    currentAudio.play();
+  }
+}
+
+function formatTime(seconds) {
+  const min = Math.floor(seconds / 60);
+  const sec = Math.floor(seconds % 60);
+  return `${min}:${sec.toString().padStart(2, '0')}`;
+}
+</script>
+
+</body>
+
+</html>
